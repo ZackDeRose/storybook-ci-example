@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "ci-test": {
+      "implementation": "./src/executors/ci-test/executor",
+      "schema": "./src/executors/ci-test/schema.json",
+      "description": "ci-test executor"
+    }
+  }
+}

@@ -68,6 +68,52 @@
           "apps/storybook-interaction-ci/**/*.{ts,tsx,js,jsx}"
         ]
       }
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "apps/storybook-interaction-ci/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/storybook-interaction-ci",
+        "configDir": "apps/storybook-interaction-ci/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c apps/storybook-interaction-ci/.storybook --url=http://localhost:4400"
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "storybook-interaction-ci:build-storybook",
+        "staticFilePath": "dist/storybook/storybook-interaction-ci"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "storybook-interaction-ci:build-storybook:ci"
+        }
+      }
+    },
+    "storybook-test-ci": {
+      "executor": "@storybook-interaction-ci/storybook-ci:ci-test"
     }
   },
   "tags": []

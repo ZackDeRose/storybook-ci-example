@@ -1,0 +1,66 @@
+{
+  "name": "storybook-ci",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "storybook-ci/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/storybook-ci",
+        "main": "storybook-ci/src/index.ts",
+        "tsConfig": "storybook-ci/tsconfig.lib.json",
+        "assets": [
+          "storybook-ci/*.md",
+          {
+            "input": "./storybook-ci/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./storybook-ci/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./storybook-ci",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./storybook-ci",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "storybook-ci/**/*.ts",
+          "storybook-ci/package.json",
+          "storybook-ci/executors.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "storybook-ci/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
